@@ -8,24 +8,24 @@ cnsl = (function() {
     xy = xy.split("");
     var x = parseInt(xy[1], 16);
     var y = parseInt(xy[0], 16);
-    c.style["background-position"] =
-      "-" + (16*x) + "px " +
-      "-" + (16*y) + "px";
+    var q = "-" + (16*x) + "px -" + (16*y) + "px";
+    c.style.backgroundPosition = q;
   }
 
   function newRow(i, content) {
     //if (i == undefined) i = -1;
 
-    var r = t.insertRow(i);
     var id = "r" + i;
+    var r = "<div class='row' id='"+id+"'>";
 
-    for (var j=0;j<80;j++) {
-      var c = r.insertCell(-1);
-      c.id = id + "c" + j;
-      setChar(c, "20");
-    }
+    for (var j=0;j<80;j++)
+      r += "<div class='cell' "+
+        "id='"+id+"c"+j+"'></div>";
 
-    return r;
+    t.innerHTML += r;
+
+    for (var j=0;j<80;j++)
+      setChar($(id+"c"+j), "20");
   }
 
   for (var j=0;j<24;j++) newRow(j);
@@ -71,7 +71,7 @@ cnsl = (function() {
     set: function(y, x, c, k) {
       var p = $("r"+y+"c"+x);
       if (c) setChar(p, c);
-      if (k) p.className = "k" + k;
+      if (k) p.className = "cell k" + k;
 
       return this;
     },
@@ -86,7 +86,7 @@ cnsl = (function() {
 
     getK: function(y, x) {
       var p = $("r"+y+"c"+x);
-      return p.className.substr(1) || "07";
+      return p.className.split(" ")[1].substr(1) || "07";
     },
 
     copyLine: function(n) {
@@ -298,6 +298,10 @@ cnsl.pop();
 
 cnsl.position(2,4).write("Hello world!");
 setTimeout(function() { cnsl.write(" How are you?"); }, 2000);
+setTimeout(function() { cnsl.write(" That's wonderful."); }, 4000);
+setTimeout(function() { cnsl.position(3,4).write("I'm a pixel-perfect console emulator written in pure JavaScript."); }, 6000);
+setTimeout(function() { cnsl.position(4,4).write("Just a stylistic thing, really."); }, 8000);
+setTimeout(function() { cnsl.write(" What do you think?"); }, 10000);
 
 //cnsl.position(2,4).write("%k09Lorem%k07 Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the %k0aleap%k07 into electronic typesetting, remaining essentially unchanged.");
 //setTimeout(function() { cnsl.insertLine(0); }, 1000);
