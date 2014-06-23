@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Terminal</title>
+    <style>
+      html, body {
+        vertical-align: middle;
+        height: 100%;
+        width: 100%;
+
+        background: #000;
+      }
+
+      html { display: table; }
+      body { display: table-cell; }
+
+      #main-container {
+        margin: auto;
+        height: 288px;
+        width: 480px;
+        padding: 12px;
+
+        border: 1px solid #444;
+        box-shadow: 6px 6px 0 #141414;
+      }
+    </style>
+    <script src="dot.js"></script>
+    <script src="font.min.js"></script>
+    <script src="terminal.min.js"></script>
+    <script>window.onload = function() {
+
+      t = new Terminal("terminal");
+
+      t.writeAt(19,73,"%k02%c9%cd%bb");
+      t.writeAt(20,73,"%k02%c8%cd%ce%cd%bb");
+      t.writeAt(21,71,"%k02%c9%cd%cb%cd%ce%cd%b9");
+      t.writeAt(22,71,"%k02%c8%cd%ca%cd%ca%cd%bc");
+
+      var k = [];
+      for (var i=0;i<16;i++) k.push(i.toString(16) + (15-i).toString(16));
+      k = "%k" + k.join("%07%09%k") + "%07%09";
+      k = k.slice(0,80) + "%n%r" + k.slice(80);
+      t.writeAt(3,0,k);
+
+      t.writeAt(6,0,"%b0%b1%b1%b2%b2%b2%db%db%db%db%b2%b2%b2%b1%b1%b0");
+
+      for (var i=0;i<16;i++) {
+        var l = "";
+        for (var j=0;j<16;j++) l += "%" + i.toString(16) + j.toString(16) + " ";
+        t.writeAt(8+i,0,l);
+      }
+
+      t.writeAt(1,24,"%k04 _  _     _ _                      _    _   ");
+      t.writeAt(2,24,"%k04| || |___| | |___  __ __ _____ _ _| |__| |  ");
+      t.writeAt(3,24,"%k0c| __ / -_) | / _ \\ \\ V  V / _ \\ '_| / _` |_ ");
+      t.writeAt(4,24,"%k06|_||_\\___|_|_\\___/  \\_/\\_/\\___/_| |_\\__,_(_)");
+
+      t.writeAt(8,38,"A pixel-perfect JavaScript terminal");
+      t.writeAt(9,38,"[>] Because I wanted one.");
+      t.writeAt(11,38,"(i) Requires Dot >=2.1.1");
+      t.writeAt(12,38,"    https://github.com/adamhovorka/dot");
+      t.writeAt(15,38,"Copyleft @ 2014 Adam Hovorka");
+      t.writeAt(16,38,"  %% All Rights Reversed %%");
+      t.writeAt(19,38,"(p_-) (^_^) (O.o) (#_#) (=^%fa^=)");
+
+      function st(s,d,c) {
+        t.write(s[0]);
+        if (s[1]) { setTimeout(function() {
+          st(s.slice(1),d,c); }, d);
+        } else { c(); }
+      }
+
+      function type(s,d,c) {
+        st(s.split(""),d||125,c); }
+
+      function typeseq(l,d,i,c) {
+        type(l[0], d||125, function() {
+          if (l[1]) {
+            setTimeout(function() {
+              t.write("%n%r");
+              typeseq(l.slice(1),d,i,c);
+            }, i||500);
+          } else { if (c) c(); }
+        });
+      }
+
+      typeseq([
+        "Graphics Demo",
+        "=============",
+      ],50,300);
+    };</script>
+  </head>
+  <body>
+    <div id="main-container">
+      <canvas id="terminal" height=288 width=480></canvas>
+    </div>
+  </body>
+</html>
