@@ -5,7 +5,7 @@ I needed a pixel-perfect terminal to go along with my pixel-perfect 3D rendering
 
 ## Requirements
 
-- [Dot.js](https://github.com/adamhovorka/dot) >=2.1.1
+- [Dot.js](https://github.com/adamhovorka/dot) >=2.1.2
 
 ## Example Code
 
